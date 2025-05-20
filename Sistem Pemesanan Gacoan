@@ -1,0 +1,114 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Class MenuItem
+class MenuItem {
+    private final String nama;
+    private final double harga;
+
+    public MenuItem(String nama, double harga) {
+        this.nama = nama;
+        this.harga = harga;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public double getHarga() {
+        return harga;
+    }
+
+    @Override
+    public String toString() {
+        return nama + " - Rp " + harga;
+    }
+}
+
+// Superclass Pesanan
+class Pesanan {
+    private final String namaPelanggan;
+    private final List<MenuItem> daftarMenu = new ArrayList<>();
+
+    public Pesanan(String namaPelanggan) {
+        this.namaPelanggan = namaPelanggan;
+    }
+
+    public void tambahMenu(MenuItem item) {
+        daftarMenu.add(item);
+    }
+
+    public double hitungTotal() {
+        double total = 0;
+        for (MenuItem item : daftarMenu) {
+            total += item.getHarga();
+        }
+        return total;
+    }
+
+    public void tampilkanPesanan() {
+        System.out.println("Pesanan atas nama: " + namaPelanggan);
+        for (MenuItem item : daftarMenu) {
+            System.out.println("- " + item);
+        }
+        System.out.println("Total: Rp " + hitungTotal());
+    }
+}
+
+// Subclass MakanDiTempat
+class MakanDiTempat extends Pesanan {
+    private final int nomorMeja;
+
+    public MakanDiTempat(String namaPelanggan, int nomorMeja) {
+        super(namaPelanggan);
+        this.nomorMeja = nomorMeja;
+    }
+
+    @Override
+    public void tampilkanPesanan() {
+        super.tampilkanPesanan();
+        System.out.println("Tipe: Makan di tempat | Meja: " + nomorMeja);
+    }
+}
+
+// Subclass DibawaPulang
+class DibawaPulang extends Pesanan {
+    private final boolean menggunakanKantong;
+
+    public DibawaPulang(String namaPelanggan, boolean menggunakanKantong) {
+        super(namaPelanggan);
+        this.menggunakanKantong = menggunakanKantong;
+    }
+
+    @Override
+    public void tampilkanPesanan() {
+        super.tampilkanPesanan();
+        System.out.println("Tipe: Dibawa Pulang | Kantong: " + (menggunakanKantong ? "Ya" : "Tidak"));
+    }
+}
+
+// Main class
+public class Main {
+    public Main(String[] args) {
+        // Buat menu
+        MenuItem mieGacoan = new MenuItem("Mie Gacoan Level 4", 18000);
+        MenuItem esGenderuwo = new MenuItem("Es Genderuwo", 12000);
+        MenuItem dimsumUdang = new MenuItem("Dimsum Udang", 15000);
+
+        // Pesanan makan di tempat
+        MakanDiTempat pesanan1 = new MakanDiTempat("Cemplon", 51);
+        pesanan1.tambahMenu(mieGacoan);
+        pesanan1.tambahMenu(esGenderuwo);
+        pesanan1.tampilkanPesanan();
+
+        System.out.println("\n");
+
+        // Pesanan dibawa pulang
+        DibawaPulang pesanan2 = new DibawaPulang("bobi", true);
+        pesanan2.tambahMenu(dimsumUdang);
+        pesanan2.tambahMenu(esGenderuwo);
+        pesanan2.tampilkanPesanan();
+    }
+}
+
+
